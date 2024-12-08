@@ -1,0 +1,9 @@
+Ip address
+^\d{0,3}.\d{0,3}.\d{0,3}.\d{0,3}\b
+
+Frequency Cont of endpoint
+\s"\S+\s+(\S+)\s+\S+"\s
+
+failing loging :- "Invalid credentials" and code 401
+"Invalid credentials"$
+\s\d+\s
