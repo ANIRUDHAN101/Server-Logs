@@ -22,7 +22,7 @@ def main():
     parser.add_argument(
         "--threshold", 
         type=int, 
-        default=5, 
+        default=10, 
         help="Threshold for detecting suspicious activity"
     )
     parser.add_argument(
@@ -66,7 +66,12 @@ def main():
         # Assign each chunk to a thread
         with ThreadPoolExecutor(max_workers=NO_THREADS + 1) as executor:
             for chunk_index in chunks_indexs:
-                executor.submit(regex_extractor, file, chunk_index, request_count, endpoint_count, suspicious_activity)
+                executor.submit(regex_extractor, file, 
+                                chunk_index, 
+                                request_count, 
+                                endpoint_count, 
+                                suspicious_activity,
+                                ERROR_CODES)
 
             # Run the consumer
             consumer.run()
@@ -87,6 +92,6 @@ def main():
     print('\n')
     display_suspicious_activity(consumer.suspicious_count)
     print(f"Execution time: {end_time - start_time} seconds")
-    
+
 if __name__ == "__main__":
     main()

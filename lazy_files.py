@@ -1,4 +1,3 @@
-#%%
 import mmap
 import os
 NO_THREADS = 12
@@ -26,4 +25,3 @@ def get_chunk_files(file: str, NO_THREADS: int) -> list:
 
     return chunk_index
 
-# %%

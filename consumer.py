@@ -100,17 +100,6 @@ class Consumer(threading.Thread):
         # threshold the suspecious activity to SUSPICIOUS_ACTIVITY_THRESHOLD
         self.suspicious_count = [data for data in self.suspicious_count if data[1] > self.suspicious_activity_threshold]
 
-        # while not self.endpoint_count.empty():
-        #     data = self.endpoint_count.get()
-        #     endpoint = data.get('Endpoint')
-        #     count = data.get('Count')
-        #     self.max_endpoint[endpoint] = count
-
-        # while not self.suspicious_activity.empty():
-        #     data = self.suspicious_activity.get()
-        #     ip = data.get('IP')
-        #     count = data.get('Count')
-        #     self.suspicious_ip_index[ip] = count
 
     def run(self):
         self.transform_data()
