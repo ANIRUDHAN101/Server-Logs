@@ -1,12 +1,24 @@
 from queue import Queue
 from regex import get_ip, get_endpoint, invalid_cred, http_status
 from typing import Any
-ERROR_CODES = [400, 401, 403, 404, 405, 500, 501, 502, 503, 504, 505]
+
 
 def regex_extractor(chunk: Any, end_index: int, 
                     request_count: Queue, 
                     endpoint_count: Queue, 
-                    suspicious_activity: Queue):
+                    suspicious_activity: Queue,
+                    error_codes: list[int]) -> None:
+    """
+        This function run as the producer thread,
+        it extracts the IP address, endpoint, and HTTP status code from the log file
+        and puts the data in the respective queues
+        args:
+            chunk: Any: the chunk of data to process
+            end_index: int: the end index of the chunk
+            request_count: Queue: the queue to store the IP address
+            endpoint_count: Queue: the queue to store the endpoint
+            suspicious_activity: Queue: the queue to store the suspicious activity
+    """
 
     while chunk.tell() < end_index:
         line = chunk.readline().decode('utf-8')
@@ -27,9 +39,9 @@ def regex_extractor(chunk: Any, end_index: int,
         if credits and http_status_code and ip:
             status_code = int(http_status_code.group(0))
             
-            if status_code in ERROR_CODES:
+            if status_code in error_codes:
 
                 suspicious_activity.put(ip)
 
-    # None flag to indicate the end of the chunk of data         
+    # "END" flag to indicate the end of the chunk of data         
     request_count.put("END")
